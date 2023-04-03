@@ -1,22 +1,25 @@
 use std::fs::File;
+// BufReader负责提供I/O（buffered I/O），这样可以减少对操作系统的调用，也就是说减少对硬盘的读取次数。
 use std::io::BufReader;
 use std::io::prelude::*;
 
 fn main() {
-  let f = File::open("readme.md").unwrap();    // <1>
-  let mut reader = BufReader::new(f);
+    let f = File::open("readme.md").unwrap();
+    let reader = BufReader::new(f);
 
-  let mut line = String::new();    // <2>
-
-  loop {
-    let len = reader.read_line(&mut line)
-                    .unwrap(); // <3>
-    if len == 0 {
-      break
+    for line_ in reader.lines {
+        let line = line_.unwrape();
+        println!("{} ({} bytes long)", line, len);
     }
 
-    println!("{} ({} bytes long)", line, len);
-
-    line.truncate(0);    // <4>
-  }
+    // let mut line = String::new();
+    //
+    // loop {
+    //     let len = reader.read_line(&mut line).unwrap();
+    //     if len == 0 {
+    //         break;
+    //     }
+    //     println!("{} ({} bytes long)", line, len);
+    //     line.truncate(0); // 将String收缩到长度为0，防止有之前行的内容遗留下来。
+    // }
 }
